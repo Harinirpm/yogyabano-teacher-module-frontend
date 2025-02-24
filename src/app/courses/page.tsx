@@ -12,7 +12,7 @@ import Lifeskill from "@/app/assets/lifeskill.png";
 import Communication from "@/app/assets/communication.png";
 import Problem from "@/app/assets/problem.png";
 import { StaticImageData } from 'next/image';
-
+import WithAuth from "@/app/components/WithAuth"
 interface Cards {
   id:number,
   image: StaticImageData,
@@ -27,21 +27,21 @@ const CardItems : Cards[] = [
     image : Lifeskill,
     title :  "Essential life skills",
     description : "Grade 8",
-    path:"/teachermodule/courses/course-module",
+    path:"/courses/course-module",
   },
   {
     id:2,
     image : Communication,
     title :  "Communication Skills",
     description : "Grade 9",
-    path: "/teachermodule/courses/course-module",
+    path: "/courses/course-module",
   },
   {
     id:3,
     image : Problem,
     title :  "Problem Solving",
     description : "Grade 3",
-    path: "/teachermodule/courses/course-module",
+    path: "/courses/course-module",
   },
 ];
 
@@ -58,17 +58,15 @@ const StyledTypography = styled(Typography)({
   marginBottom:"30px",
 })
 
-
-
 const useStyles = makeStyles({
 gridStyles:{
   "&.MuiGrid2-root":{
     rowSpacing:"18px",
     columnSpacing:"24px",
   },
-
 },
 });
+
 const Courses = () => {
   const classes = useStyles();
 
@@ -79,7 +77,7 @@ const Courses = () => {
       <FilterComponent />
       </Box>
       <StyledTypography>Available Courses for Teaching</StyledTypography>
-
+      
       <Box sx={{ flexGrow: 1 }}>
       <Grid container rowSpacing="24px" columnSpacing="18px" spacing={{ xs: 1, md: 2.4 }} columns={{ xs: 4, sm: 8, md: 12 }}>
         {CardItems.map((card,id) => (
@@ -93,4 +91,4 @@ const Courses = () => {
     </StyledContainer>
   )
 }
-export default Courses;
+export default WithAuth(Courses);

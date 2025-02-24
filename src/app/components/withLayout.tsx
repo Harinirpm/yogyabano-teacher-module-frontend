@@ -55,7 +55,7 @@ const bottomItems: ActiveItem[] = [
   { 
     icon: <Leftclose />,
      name: "", 
-     path: "/"
+     path: "/login"
      },
 ];
 type WithLayoutProps = {
