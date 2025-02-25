@@ -14,7 +14,6 @@ interface CardProps {
   image: StaticImageData;
   title: string;
   description: string;
-  // path: string;
 }
 
 const useStyles = makeStyles({
