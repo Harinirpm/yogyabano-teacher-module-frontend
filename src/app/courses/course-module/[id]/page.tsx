@@ -42,29 +42,47 @@ const rows = [
 
 export const courses = [
   {
-    id: "1",
-    title: "Essential life skills",
-    grade: "Grade 8",
-    description:
-      "This course equips students with vital life skills such as effective communication,decision-making, and problem-solving. Through engaging lessons and activities, learners will build confidence and resilience to tackle everyday challenges.",
-    image: LifeSkill,
+    "course_id": "22",
+    "image": {
+      src: LifeSkill,
+      height: "",
+      width: "",
+    },
+    "name": "Introduction to test",
+    "school_id": 73,
+    "description": "An introductory course.",
+    "progress": 0,
+    "status": "not_started",
+    "created_at": "2025-02-24T17:01:15",
+    "updated_at": "2025-02-25T08:59:52",
+    "teacher_id": 22,
+    "grade": {
+        "grade_id": 35,
+        "school_id": 73,
+        "name": "Grade 10",
+        "capacity": 30,
+        "subjects": "Math, Science, English",
+        "description": "10th Grade class with focus on core subjects.",
+        "industry": "Education",
+        "date_created": "2025-01-29T00:00:00"
+    }
   },
-  {
-    id: "2",
-    title: "Communication skills",
-    grade: "Grade 9",
-    description:
-      "This course equips students with vital life skills such as effective communication,decision-making, and problem-solving. Through engaging lessons and activities, learners will build confidence and resilience to tackle everyday challenges.",
-    image: Communication,
-  },
-  {
-    id: "3",
-    title: "Problem Solving",
-    grade: "Grade 3",
-    description:
-      "This course equips students with vital life skills such as effective communication,decision-making, and problem-solving. Through engaging lessons and activities, learners will build confidence and resilience to tackle everyday challenges.",
-    image: Problem,
-  },
+  // {
+  //   id: "2",
+  //   title: "Communication skills",
+  //   grade: "Grade 9",
+  //   description:
+  //     "This course equips students with vital life skills such as effective communication,decision-making, and problem-solving. Through engaging lessons and activities, learners will build confidence and resilience to tackle everyday challenges.",
+  //   image: Communication,
+  // },
+  // {
+  //   id: "3",
+  //   title: "Problem Solving",
+  //   grade: "Grade 3",
+  //   description:
+  //     "This course equips students with vital life skills such as effective communication,decision-making, and problem-solving. Through engaging lessons and activities, learners will build confidence and resilience to tackle everyday challenges.",
+  //   image: Problem,
+  // },
 ];
 
 const AntSwitch = styled(Switch)(({ theme }) => ({
@@ -144,6 +162,7 @@ const useStyles = makeStyles({
     ml: "20px",
     mr: "20px",
     mt: "32px",
+    // width:"760px"
   },
   tablefirstcellhead: {
     color: "#2F4362",
@@ -172,7 +191,7 @@ const useStyles = makeStyles({
 const CourseModule = () => {
   const classes = useStyles();
   const { id } = useParams();
-  const course = courses.find((course) => course.id === id);
+  const course = courses.find((course) => course.course_id === id);
   if (!course) {
     return (
       <Typography sx={{ textAlign: "center", mt: 4 }}>
@@ -246,7 +265,7 @@ const CourseModule = () => {
           <Box display="flex" sx={{ padding: "30px 131px" }}>
             <Image
               src={course.image.src}
-              alt={course.title}
+              alt={course.name}
               height={260}
               width={260}
               style={{ borderRadius: "12px" }}
@@ -254,10 +273,10 @@ const CourseModule = () => {
             />
             <Box className={classes.textBoxStyles}>
               <Typography className={classes.styledTypo}>
-                {course.title}
+                {course.name}
               </Typography>
               <Typography className={classes.styledTypo2}>
-                {course.grade}
+                {course.grade.name}
               </Typography>
               <Typography className={classes.styledTypo3}>
                 {course.description}
@@ -268,7 +287,7 @@ const CourseModule = () => {
 
         {/* <TableContainer component={Paper} > */}
         <Box className={classes.tableBox}>
-          <Table sx={{ minWidth: 100 }} aria-label="simple table">
+          <Table sx={{ minWidth: 50 }} aria-label="simple table">
             <TableHead>
               <TableRow>
                 <TableCell align="left" className={classes.tablefirstcellhead}>

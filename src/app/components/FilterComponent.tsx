@@ -21,6 +21,11 @@ const MenuProps = {
   },
 };
 
+// interface FilterComponentProps {
+//   onGradeSelect : (grade: string) => void;
+//   onStatusSelect : (status: string) => void;
+// }
+
 const names = [
     'Course Title',
     'Grade',

@@ -6,6 +6,11 @@ import SearchIcon from '@mui/icons-material/Search';
 import theme from '../theme';
 import { makeStyles } from '@mui/styles';
 
+
+interface SearchbarProps {
+  onSearch: (searchTerm: string) => void; 
+}
+
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
     backgroundColor: theme.palette.common.white,
@@ -52,8 +57,13 @@ const Search = styled('div')(({ theme }) => ({
     }
   })
 
-const Searchbar = () => {
+  const Searchbar: React.FC<SearchbarProps> = ({ onSearch }) => {
   const classes = useStyles();
+  const [input, setInput] = React.useState("");
+const handleChange = (e:any) =>{
+  setInput(e.target.value);
+  onSearch(e.target.value);
+}
   return (
     
           <Search>
@@ -62,6 +72,8 @@ const Searchbar = () => {
             </SearchIconWrapper>
             <StyledInputBase
               placeholder="Search course title"
+              value={input}
+              onChange={handleChange}
               inputProps={{ 'aria-label': 'search' }}
             />
           </Search>
