@@ -3,7 +3,7 @@ import CardComponent from "@/app/components/CardComponent";
 import FilterComponent from "@/app/components/FilterComponent";
 import Searchbar from "@/app/components/Searchbar";
 import { Container, Typography } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { experimentalStyled as styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid2";
@@ -13,34 +13,35 @@ import Communication from "@/app/assets/communication.png";
 import Problem from "@/app/assets/problem.png";
 import { StaticImageData } from "next/image";
 import WithAuth from "@/app/components/WithAuth";
+import {getRequest} from "@/app/utils/apiUtils"
 
-interface Cards {
+interface Course {
   id: number;
-  image: StaticImageData;
+  image: string; //StaticImageData
   title: string;
   description: string;
 }
 
-const CardItems: Cards[] = [
-  {
-    id: 1,
-    image: Lifeskill,
-    title: "Essential life skills",
-    description: "Grade 8",
-  },
-  {
-    id: 2,
-    image: Communication,
-    title: "Communication Skills",
-    description: "Grade 9",
-  },
-  {
-    id: 3,
-    image: Problem,
-    title: "Problem Solving",
-    description: "Grade 3",
-  },
-];
+// const CardItems: Course[] = [
+//   {
+//     id: 1,
+//     image: Lifeskill,
+//     title: "Essential life skills",
+//     description: "Grade 8",
+//   },
+//   {
+//     id: 2,
+//     image: Communication,
+//     title: "Communication Skills",
+//     description: "Grade 9",
+//   },
+//   {
+//     id: 3,
+//     image: Problem,
+//     title: "Problem Solving",
+//     description: "Grade 3",
+//   },
+// ];
 
 const StyledContainer = styled(Container)({
   marginLeft: "62px",
@@ -66,6 +67,21 @@ const useStyles = makeStyles({
 
 const Courses = () => {
   const classes = useStyles();
+  const [courses,setCourses] = useState<Course[]>([]);
+  
+  useEffect(()=>{
+    const fetchCourses = async () => {
+      try{
+        const response = await getRequest("/backend/getCourses/22");
+        setCourses(response.data)
+      }
+      catch(error){
+        console.error("Error fetching data",error);
+      }
+    };
+    fetchCourses();
+  },[]);
+
 
   return (
     <StyledContainer>
@@ -83,9 +99,10 @@ const Courses = () => {
           spacing={{ xs: 1, md: 2.4 }}
           columns={{ xs: 4, sm: 8, md: 12 }}
         >
-          {CardItems.map((card) => (
+          {courses.map((card) => (
             <Grid key={card.id} size={{ xs: 2, sm: 4, md: 4 }}>
-              <CardComponent {...card} path={`/courses/course-module/${card.id}`} />
+              <CardComponent {...card} /> 
+              {/* path={`/courses/course-module/${card.id}`} */}
             </Grid>
           ))}
         </Grid>

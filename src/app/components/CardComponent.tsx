@@ -14,7 +14,7 @@ interface CardProps {
   image: StaticImageData;
   title: string;
   description: string;
-  path: string;
+  // path: string;
 }
 
 const useStyles = makeStyles({
@@ -60,13 +60,13 @@ const CardComponent: React.FC<CardProps> = ({
   image,
   title,
   description,
-  path,
+  // path,
 }) => {
   const classes = useStyles();
   const imageUrl = typeof image === "string" ? image : image.src;
   return (
     <Card className={classes.cardStyles}>
-      <Link href={path} passHref legacyBehavior>
+      <Link href={"/courses/"} passHref legacyBehavior>
         <a
           style={{
             textDecoration: "none",
