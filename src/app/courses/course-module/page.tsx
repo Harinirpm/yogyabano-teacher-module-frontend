@@ -110,7 +110,7 @@ const useStyles = makeStyles({
     marginBottom: "28px",
   },
   imgStyle: {
-    padding: "22px",
+    margin: "22px",
     borderRadius: "12px",
   },
   textBoxStyles: {
@@ -171,7 +171,6 @@ const CourseModule = () => {
         <StyledBox>
           {courses.map((course, id) => (
             <Box display="flex" sx={{ padding: "30px 131px" }} key={course.id}>
-              <Box sx={{borderRadius:"12px"}}>
               <Image
                 src={course.image.src}
                 alt={course.title}
@@ -180,7 +179,6 @@ const CourseModule = () => {
                 style={{ borderRadius: "12px" }}
                 className={classes.imgStyle}
               />
-              </Box>
               <Box className={classes.textBoxStyles}>
                 <Typography className={classes.styledTypo}>
                   {course.title}

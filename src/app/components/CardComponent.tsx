@@ -66,11 +66,7 @@ const CardComponent: React.FC<CardProps> = ({
   const imageUrl = typeof image === "string" ? image : image.src;
   return (
     <Card className={classes.cardStyles}>
-      <Link
-        href={"/courses/course-module"}
-        passHref
-        legacyBehavior
-      >
+      <Link href={path} passHref legacyBehavior>
         <a
           style={{
             textDecoration: "none",
