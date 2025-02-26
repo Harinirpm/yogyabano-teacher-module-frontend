@@ -8,36 +8,39 @@ import withLayout from "./withLayout";
 const withAuth = (WrappedComponent: React.ComponentType) => {
   const AuthComponent = (props: any) => {
     const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(
-      true
+      null
     );
+
     const router = useRouter();
-
     useEffect(() => {
-      const checkAuth = () => {
-        const userData = sessionStorage.getItem("user");
-        const sessionData = userData ? JSON.parse(userData).session : null;
-        if (sessionData) {
-          const session = sessionData;
-          const currentTime = Math.floor(Date.now() / 1000);
-          if (session.expires_at > currentTime) {
-            setIsAuthenticated(true);
-          } else {
-            setIsAuthenticated(false);
-            toast.error("Session expired. Please log in again.");
-            router.push("/");
-          }
-        } else {
-          setIsAuthenticated(false);
-          router.push("/");
-        }
-      };
+       setIsAuthenticated(true);
+      }, []);
+    // useEffect(() => {
+    //   const checkAuth = () => {
+    //     const userData = sessionStorage.getItem("user");
+    //     const sessionData = userData ? JSON.parse(userData).session : null;
+    //     if (sessionData) {
+    //       const session = sessionData;
+    //       const currentTime = Math.floor(Date.now() / 1000);
+    //       if (session.expires_at > currentTime) {
+    //         setIsAuthenticated(true);
+    //       } else {
+    //         setIsAuthenticated(false);
+    //         toast.error("Session expired. Please log in again.");
+    //         router.push("/");
+    //       }
+    //     } else {
+    //       setIsAuthenticated(false);
+    //       router.push("/");
+    //     }
+    //   };
 
-      checkAuth();
-    }, [router]);
+    //   checkAuth();
+    // }, [router]);
 
-    if (isAuthenticated === null) {
-      return <div>Loading...</div>;
-    }
+    // if (isAuthenticated === null) {
+    //   return <div>Loading...</div>;
+    // }
 
     return isAuthenticated ? <WrappedComponent {...props} /> : null;
   };
