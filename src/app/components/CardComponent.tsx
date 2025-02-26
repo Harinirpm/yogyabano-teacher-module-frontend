@@ -15,8 +15,8 @@ interface CardProps {
   img: string;
   name: string;
   grade_name: string;
-  status:string;
-  path:string
+  status: string;
+  path: string;
 }
 
 const useStyles = makeStyles({
@@ -32,6 +32,7 @@ const useStyles = makeStyles({
     boxShadow:
       "0px 2px 4px 0px rgba(0, 0, 0, 0.14), 0px 0px 2px 0px rgba(0, 0, 0, 0.12)",
     textDecoration: "none",
+    zIndex: 2,
   },
   typoStyles: {
     fontSize: "14px",
@@ -55,6 +56,23 @@ const useStyles = makeStyles({
       backgroundColor: "transparent",
     },
   },
+  btn: {
+    padding: "10px 24px",
+    textTransform: "none",
+    color: "#FFFFFF",
+    fontSize: "16px",
+    width: "100%",
+    height: "48px",
+    justifyContent: "center",
+    alignSelf: "stretch",
+    backgroundColor: "#ff7500",
+  },
+  gradeSection: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    pt: "8px",
+  },
 });
 
 const CardComponent: React.FC<CardProps> = ({
@@ -67,12 +85,26 @@ const CardComponent: React.FC<CardProps> = ({
 }) => {
   const classes = useStyles();
 
-  const statusMapping:Record<string,string> = {
-    not_started : "Not started",
-    in_progress : "In progress",
-    completed : "Completed",
-  }
- 
+  const statusMapping: Record<
+    string,
+    { label: string; color: string; backgroundColor: string }
+  > = {
+    not_started: {
+      label: "Not started",
+      color: "#7b7b7c",
+      backgroundColor: "#f4f4f5",
+    },
+    in_progress: {
+      label: "In progress",
+      color: "#249DFF",
+      backgroundColor: "#eef8ff",
+    },
+    completed: {
+      label: "Completed",
+      color: "#FF7500",
+      backgroundColor: "#fff4eb",
+    },
+  };
   return (
     <Card className={classes.cardStyles}>
       <Link href={path} passHref legacyBehavior>
@@ -97,17 +129,36 @@ const CardComponent: React.FC<CardProps> = ({
               <Typography gutterBottom className={classes.typoStyles}>
                 {name}
               </Typography>
-              <Box sx={{display:"flex",justifyContent:"space-between",alignItems:"center",pt:"8px"}}>
-              <Typography className={classes.typoStyles2}>
-                {grade_name}
-              </Typography>
-              <Chip label={statusMapping[status] || status}
-               sx={{fontSize:"14px",width:"auto",
-                padding:"6px 16px",
-                "& .MuiChip-label": { fontSize: "14px",color:"#535353",padding:"0px",fontWeight:500, } }}/>
+              <Box className={classes.gradeSection}>
+                <Typography className={classes.typoStyles2}>
+                  {grade_name}
+                </Typography>
+                <Chip
+                  label={statusMapping[status]?.label || status}
+                  sx={{
+                    fontSize: "14px",
+                    width: "auto",
+                    padding: "6px 16px",
+                    backgroundColor:
+                      statusMapping[status]?.backgroundColor || "#BDBDBD",
+                    color: statusMapping[status]?.color || "#7b7b7c",
+                    "& .MuiChip-label": {
+                      fontSize: "14px",
+                      padding: "0px",
+                      fontWeight: 500,
+                    },
+                  }}
+                />
               </Box>
             </CardContent>
-              <Button variant="contained"  disableFocusRipple disableTouchRipple sx={{padding: "10px 24px",textTransform:"none",color:"#FFFFFF",fontSize:"16px",width:"100%",height:"48px",justifyContent:"center",alignSelf:"stretch"}}>Start Now</Button>
+            <Button
+              variant="contained"
+              disableFocusRipple
+              disableTouchRipple
+              className={classes.btn}
+            >
+             {status === "not_started" ? "Start Now" : "Continue"}
+            </Button>
           </CardActionArea>
         </a>
       </Link>

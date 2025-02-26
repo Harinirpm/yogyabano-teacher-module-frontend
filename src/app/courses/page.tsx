@@ -21,6 +21,28 @@ interface Course {
   title: string;
   description: string;
 }
+
+// const CardItems: Course[] = [
+//   {
+//     id: 1,
+//     image: Lifeskill,
+//     title: "Essential life skills",
+//     description: "Grade 8",
+//   },
+//   {
+//     id: 2,
+//     image: Communication,
+//     title: "Communication Skills",
+//     description: "Grade 9",
+//   },
+//   {
+//     id: 3,
+//     image: Problem,
+//     title: "Problem Solving",
+//     description: "Grade 3",
+//   },
+// ];
+
 const StyledContainer = styled(Container)({
   marginLeft: "62px",
   marginTop: "40px",
@@ -65,6 +87,13 @@ const Courses = () => {
     fetchCourses();
   },[]);
 
+  // const filteredCourses = courses.filter((course) => {
+  //   const matchSearch = searchTerm? course.name.toLowerCase().includes(searchTerm.toLowerCase()):true;
+  //   const matchGrade = selectedGrade?course.grade_name === selectedGrade : true;
+  //   const matchStatus = selectedStatus?course.status === selectedStatus:true;
+  //   return matchSearch && matchGrade && matchStatus;
+  // });
+
   const filteredCourses = searchTerm
   ? courses.filter((course) => 
       course.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -90,7 +119,7 @@ const Courses = () => {
             {filteredCourses?.length > 0 ? (
           filteredCourses.map((card) => (
             <Grid key={card.course_id} size={{ xs: 2, sm: 4, md: 4 }}>
-              <CardComponent {...card} path={`/courses/course-module/${card.course_id}`} />
+              <CardComponent {...card} path={`/courses/course-module/1`} />
             </Grid>
           ))
         ) : (

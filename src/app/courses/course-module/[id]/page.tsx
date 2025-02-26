@@ -28,6 +28,7 @@ import Switch, { SwitchProps } from "@mui/material/Switch";
 import Stack from "@mui/material/Stack";
 import Assessment from "@/app/assets/Assesment";
 import { useParams } from "next/navigation";
+import { getRequest } from "@/app/utils/apiUtils";
 
 function createData(lessonplan: string) {
   return { lessonplan };
@@ -38,51 +39,6 @@ const rows = [
   createData("Lesson Plan 2"),
   createData("Presentation"),
   createData("Assessment"),
-];
-
-export const courses = [
-  {
-    "course_id": "22",
-    "image": {
-      src: LifeSkill,
-      height: "",
-      width: "",
-    },
-    "name": "Introduction to test",
-    "school_id": 73,
-    "description": "An introductory course.",
-    "progress": 0,
-    "status": "not_started",
-    "created_at": "2025-02-24T17:01:15",
-    "updated_at": "2025-02-25T08:59:52",
-    "teacher_id": 22,
-    "grade": {
-        "grade_id": 35,
-        "school_id": 73,
-        "name": "Grade 10",
-        "capacity": 30,
-        "subjects": "Math, Science, English",
-        "description": "10th Grade class with focus on core subjects.",
-        "industry": "Education",
-        "date_created": "2025-01-29T00:00:00"
-    }
-  },
-  // {
-  //   id: "2",
-  //   title: "Communication skills",
-  //   grade: "Grade 9",
-  //   description:
-  //     "This course equips students with vital life skills such as effective communication,decision-making, and problem-solving. Through engaging lessons and activities, learners will build confidence and resilience to tackle everyday challenges.",
-  //   image: Communication,
-  // },
-  // {
-  //   id: "3",
-  //   title: "Problem Solving",
-  //   grade: "Grade 3",
-  //   description:
-  //     "This course equips students with vital life skills such as effective communication,decision-making, and problem-solving. Through engaging lessons and activities, learners will build confidence and resilience to tackle everyday challenges.",
-  //   image: Problem,
-  // },
 ];
 
 const AntSwitch = styled(Switch)(({ theme }) => ({
@@ -179,7 +135,7 @@ const useStyles = makeStyles({
     fontWeight: 500,
     lineHeight: "normal",
   },
-  downloadMaterial :{
+  downloadMaterial: {
     color: "#FF7500",
     fontSize: "10px",
     fontWeight: 500,
@@ -187,17 +143,64 @@ const useStyles = makeStyles({
     padding: "4px 8px",
     "&:hover": { backgroundColor: "#fff" },
   },
+  markAsTaught: {
+    pr: "1px",
+    width: "140px",
+    color: "#2F4362CC",
+    fontSize: "10px",
+    fontWeight: 500,
+    lineHeight: "normal",
+  },
+  lessonplans:{
+    color: "#2F4362CC",
+    fontSize: "16px",
+    fontWeight: 500,
+    display: "flex",
+    alignItems: "center",
+    gap: "8px",
+  },
+
 });
 const CourseModule = () => {
   const classes = useStyles();
-  const { id } = useParams();
-  const course = courses.find((course) => course.course_id === id);
+  const params = useParams();
+  const id = params?.id;
+  console.log(id);
+  const [courses,setCourses] = React.useState<any[]>([]);
+  const [loading, setLoading] = React.useState(true);
+
+  React.useEffect(()=>{
+    if(!id) return;
+    const fetchCoursedata = async () =>{
+      try{
+    const response = await getRequest(`/backend/getAllCourses/${id}`);
+    console.log("course module data",response.data);
+    setCourses(response.data.courses || []);
+      }
+      catch(error){
+        console.error("Error fetching data",error);
+      }
+      finally{
+        setLoading(false);
+      }
+    };
+    fetchCoursedata();
+  },[id]);
+
+  const course = courses?.find((course) => "1" === id);
+  console.log("extracting course",course);
   if (!course) {
     return (
       <Typography sx={{ textAlign: "center", mt: 4 }}>
         Course not fount!...
       </Typography>
     );
+  }
+  if(loading){
+    return <Typography sx={{ textAlign: "center", mt: 4 }}>Loading...</Typography>;
+  }
+  if(!course){
+    return <Typography sx={{ textAlign: "center", mt: 4 }}>Course not found!...</Typography>;
   }
 
   const renderIcon = (type: string) => {
@@ -264,8 +267,8 @@ const CourseModule = () => {
         <StyledBox>
           <Box display="flex" sx={{ padding: "30px 131px" }}>
             <Image
-              src={course.image.src}
-              alt={course.name}
+              src={course?.img}
+              alt={course?.name}
               height={260}
               width={260}
               style={{ borderRadius: "12px" }}
@@ -273,13 +276,13 @@ const CourseModule = () => {
             />
             <Box className={classes.textBoxStyles}>
               <Typography className={classes.styledTypo}>
-                {course.name}
+                {course?.name}
               </Typography>
               <Typography className={classes.styledTypo2}>
-                {course.grade.name}
+                {course?.grade_name}
               </Typography>
               <Typography className={classes.styledTypo3}>
-                {course.description}
+                {course?.description}
               </Typography>
             </Box>
           </Box>
@@ -311,16 +314,7 @@ const CourseModule = () => {
                     Download Materials
                   </Button>
                 </TableCell>
-                <TableCell
-                  sx={{
-                    pr: "1px",
-                    width: "140px",
-                    color: "#2F4362CC",
-                    fontSize: "10px",
-                    fontWeight: 500,
-                    lineHeight: "normal",
-                  }}
-                >
+                <TableCell className={classes.markAsTaught}>
                   Mark as Taught
                 </TableCell>
                 <TableCell sx={{ pr: "14px", width: "20px" }}>
@@ -340,14 +334,7 @@ const CourseModule = () => {
                   <TableCell
                     component="th"
                     scope="row"
-                    sx={{
-                      color: "#2F4362CC",
-                      fontSize: "16px",
-                      fontWeight: 500,
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "8px",
-                    }}
+                   className={classes.lessonplans}
                   >
                     {renderIcon(row.lessonplan)}
                     {row.lessonplan}
